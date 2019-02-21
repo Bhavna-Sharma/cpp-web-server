@@ -1,26 +1,10 @@
-clone repo
-`$ git clone https://github.com`
+# Project Manager
 
-install apache
-`$ sudo apt-get update`
-`$ sudo apt-get install apache2`
+## Installation
+Manual installation instructions can be on the [wiki page](https://github.com/elanlb/project-manager/wiki/Manual-Installation).
 
-enable cgi
-`$ sudo a2enconf serve-cgi-bin`
-`$ sudo a2enmod cgid`
+## Credits
+- [spdlog Library](https://github.com/gabime/spdlog/)
+- [JSON Library](https://github.com/nlohmann/json)
 
-make links
-`$ cd /var/www`
-`$ sudo rm -r html`
-`$ sudo ln -s ~/project-manager/web/html/ html`
-`$ sudo ln -s ~/project-manager/web/js/ js`
-`$ sudo ln -s ~/project-manager/web/css/ css`
-`$ sudo ln -s ~/project-manager/core/ core`
-
-configure apache
-`$ cd /etc/apache2/conf-enabled`
-`$ sudo nano serve-cgi-bin.conf`
-instructions to link to the folder
-
-install database
-`$ sudo apt-get install postgresql-10`
+c++ select.cpp -std=c++11 -pthread -lpqxx -Iinclude
