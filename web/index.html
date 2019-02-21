@@ -9,6 +9,18 @@
             href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
             integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
             crossorigin="anonymous" />
+
+        <style>
+            .row {
+                margin-bottom: 20px;
+            }
+            input[type=text] {
+                width: 150px;
+            }
+            .form-control-plaintext {
+                width: 100px;
+            }
+        </style>
     </head>
     <body>
         <nav class="navbar navbar-light">
@@ -19,14 +31,15 @@
         </nav>
 
         <div class="container">
-            <form method="POST" action="/cgi/query" onsubmit="return submitForm(this);">
+            <form action="/cgi-bin/select" method="POST">
                 <div class="row">
-                    <div class="col">
-                        <input class="form-check-input" type="radio" name="queryTypes" value="select">
-                        <label class="form-check-label" for="selectLabel">SELECT</label>
+                    <div class="col-auto">
+                        <button type="submit" class="btn btn-primary">SELECT</button>
                     </div>
-                    <div class="col">
-                        <select multiple class="form-control" name="columns">
+                    <div class="col-auto">*</div>
+                    <div class="col-auto">FROM employees WHERE</div>
+                    <div class="col-auto">
+                        <select class="form-control" name="where">
                             <option>employeeid</option>
                             <option>fullname</option>
                             <option>homeaddress</option>
@@ -34,43 +47,97 @@
                             <option>salary</option>
                         </select>
                     </div>
-                    <div class="col"><p>FROM employees WHERE</p></div>
-                    <div class="col">
-                        <select class="form-control" name="whereColumnName">
-                            <option>employeeid</option>
-                            <option>fullname</option>
-                            <option>homeaddress</option>
-                            <option>emailaddress</option>
-                            <option>salary</option>
-                        </select>
-                    </div>
-                    <div class="col"><p>=</p></div>
-                    <div class="col">
-                        <input type="text" class="form-control" name="compareValue">
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="col">
-                        <input class="form-check-input" type="radio" name="queryTypes" value="insert">
-                        <label class="form-check-label" for="selectLabel">INSERT</label>
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="col">
-                        <input class="form-check-input" type="radio" name="queryTypes" value="update">
-                        <label class="form-check-label" for="selectLabel">UPDATE</label>
-                    </div>
-                </div>
-                
-                <div class="row">
-                    <div class="col">
-                        <input class="form-check-input" type="radio" name="queryTypes" value="delete">
-                        <label class="form-check-label" for="selectLabel">DELETE</label>
+                    <div class="col-auto">=</div>
+                    <div class="col-auto">
+                        <input type="text" class="form-control" name="value">
                     </div>
                 </div>
             </form>
+
+            <form action="/cgi-bin/insert" method="POST">
+                <div class="row">
+                    <div class="col-auto">
+                        <button type="submit" class="btn btn-primary">INSERT</button>
+                    </div>
+                    <div class="col-auto">INTO employees</div>
+                    <div class="col-auto">
+                        <input type="text" readonly class="form-control-plaintext" value="employeeid">
+                        <input type="text" readonly class="form-control-plaintext" value="fullname">
+                        <input type="text" readonly class="form-control-plaintext" value="homeaddress">
+                        <input type="text" readonly class="form-control-plaintext" value="emailaddress">
+                        <input type="text" readonly class="form-control-plaintext" value="salary">
+                    </div>
+                    <div class="col-auto">VALUES</div>
+                    <div class="col-auto">
+                        <input type="text" class="form-control" name="employeeid">
+                        <input type="text" class="form-control" name="fullname">
+                        <input type="text" class="form-control" name="homeaddress">
+                        <input type="text" class="form-control" name="emailaddress">
+                        <input type="text" class="form-control" name="salary">
+                    </div>
+                </div>
+            </form>
+
+            <form action="/cgi-bin/update" method="POST">
+                <div class="row">
+                    <div class="col-auto">
+                        <button type="submit" class="btn btn-primary">UPDATE</button>
+                    </div>
+                    <div class="col-auto">users SET</div>
+                    <div class="col-auto">
+                        <input type="text" readonly class="form-control-plaintext" value="employeeid">
+                        <input type="text" readonly class="form-control-plaintext" value="fullname">
+                        <input type="text" readonly class="form-control-plaintext" value="homeaddress">
+                        <input type="text" readonly class="form-control-plaintext" value="emailaddress">
+                        <input type="text" readonly class="form-control-plaintext" value="salary">
+                    </div>
+                    <div class="col-auto">=</div>
+                    <div class="col-auto">
+                        <input type="text" class="form-control" name="employeeid">
+                        <input type="text" class="form-control" name="fullname">
+                        <input type="text" class="form-control" name="homeaddress">
+                        <input type="text" class="form-control" name="emailaddress">
+                        <input type="text" class="form-control" name="salary">
+                    </div>
+                    <div class="col-auto">WHERE</div>
+                    <div class="col-auto">
+                        <select class="form-control" name="where">
+                            <option>employeeid</option>
+                            <option>fullname</option>
+                            <option>homeaddress</option>
+                            <option>emailaddress</option>
+                            <option>salary</option>
+                        </select>
+                    </div>
+                    <div class="col-auto">=</div>
+                    <div class="col-auto">
+                        <input type="text" class="form-control" name="value">
+                    </div>
+                </div>
+            </form>
+
+            <form action="/cgi-bin/delete" method="POST">
+                <div class="row">
+                    <div class="col-auto">
+                        <button type="submit" class="btn btn-primary">DELETE</button>
+                    </div>
+                    <div class="col-auto">FROM users WHERE</div>
+                    <div class="col-auto">
+                        <select class="form-control" name="where">
+                            <option>employeeid</option>
+                            <option>fullname</option>
+                            <option>homeaddress</option>
+                            <option>emailaddress</option>
+                            <option>salary</option>
+                        </select>
+                    </div>
+                    <div class="col-auto">=</div>
+                    <div class="col-auto">
+                        <input type="text" class="form-control" name="value">
+                    </div>
+                </div>
+            </form>
+
         </div>
 
         <!-- Load script for this page -->
