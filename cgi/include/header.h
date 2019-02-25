@@ -1,35 +1,7 @@
 #include <iostream>
+#include <map>
 
-#include <spdlog/spdlog.h>
-#include <spdlog/logger.h>
-#include <spdlog/sinks/base_sink.h>
 #include <pqxx/pqxx>
-
-// initialize the logger
-auto logger = spdlog::basic_logger_mt("basic_logger", "../logs/cgi-log.txt");
-
-pqxx::result executeQuery (std::string query)
-{
-    try {
-        pqxx::connection C("dbname=cpp-web-server user=cgi password=password hostaddr=127.0.0.1 port=5432");
-        if (!C.is_open())
-        {
-            logger->warn("Could not connect to database");
-        }
-
-        // create and execute sql statement
-        pqxx::nontransaction N(C);
-        pqxx::result R = N.exec(query);
-        
-        C.disconnect(); // disconnect from database
-
-        return R; // return the result object
-
-    } catch (const std::exception &e) {
-        logger->warn("Error in database connection:");
-        logger->warn(e.what());
-    }
-}
 
 std::map<std::string, std::string> parseInput (std::string inputString)
 {
@@ -37,8 +9,9 @@ std::map<std::string, std::string> parseInput (std::string inputString)
     std::string key = "";
     std::string value = "";
     int part = 0; // 0 is key and 1 is value
-    char c;
+    char c; // current character in string
 
+    // input string is format key1=value1&key2=value2 etc...
     for (int i = 0; i < inputString.length(); i++)
     {
         c = inputString.at(i);
@@ -61,8 +34,37 @@ std::map<std::string, std::string> parseInput (std::string inputString)
             }
             else if (part == 1)
             {
+                if (c == '+')
+                {
+                    c = ' ';
+                }
                 value += c;
             }
         }
+    }
+    parameters[key] = value; // final one
+
+    return parameters;
+}
+
+pqxx::result executeQuery (std::string query)
+{
+    try {
+        pqxx::connection C("dbname=cpp-web-server user=cgi password=password hostaddr=127.0.0.1 port=5432");
+        if (!C.is_open())
+        {
+            // database connection error
+        }
+
+        // create and execute sql statement
+        pqxx::nontransaction N(C);
+        pqxx::result R = N.exec(query);
+        
+        C.disconnect(); // disconnect from database
+
+        return R; // return the result object
+
+    } catch (const std::exception &e) {
+        // some other error
     }
 }
