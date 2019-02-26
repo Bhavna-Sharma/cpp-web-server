@@ -3,7 +3,7 @@
 - Internet connection
 
 ## Steps
-Follow the steps in order and your installation should work.
+Follow the steps in order and your installation should work. You might consider the install script, located at `utilities/configure.sh`.
 
 ### Add project
 Clone repo
@@ -44,3 +44,16 @@ Set up database
 - `$ sudo -u postgres psql -d cpp-web-server -f setup.sql`
 
 ### Build
+Create binaries
+- `$ cd ~/cpp-web-server/cgi`
+- `$ c++ select.cpp -std=c++11 -lpqxx -o ../cgi-bin/select`
+- `$ c++ insert.cpp -std=c++11 -lpqxx -o ../cgi-bin/insert`
+- `$ c++ update.cpp -std=c++11 -lpqxx -o ../cgi-bin/update`
+- `$ c++ delete.cpp -std=c++11 -lpqxx -o ../cgi-bin/delete`
+
+Set up permissions
+- `$ cd ../cgi-bin`
+- `$ chmod o+x select`
+- `$ chmod o+x insert`
+- `$ chmod o+x update`
+- `$ chmod o+x delete`
