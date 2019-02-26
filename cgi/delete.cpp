@@ -19,7 +19,7 @@ int main (int argc, char* argv[])
 
         // content type header
         std::cout << "Content-type: text/html" << std::endl << std::endl;
-        // csv columns header
+        // output message
         std::cout << "Table has been updated.";
     }
     else
