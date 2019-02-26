@@ -1,4 +1,5 @@
 #include "header.h"
+#include <sstream>
 
 int main (int argc, char* argv[])
 {
@@ -9,26 +10,21 @@ int main (int argc, char* argv[])
     {
         std::map<std::string, std::string> parsedInput = parseInput(request);
         // form the sql statement
-        std::string query = "SELECT * FROM employees WHERE ";
-        query += parsedInput["where"];
-        query += " = '";
-        query += parsedInput["value"];
-        query += "';";
+        std::stringstream query;
+        query << "UPDATE employees SET ";
+        query << "employeeid = '" << parsedInput["employeeid"] << "',";
+        query << "fullname = '" << parsedInput["fullname"] << "',";
+        query << "homeaddress = '" << parsedInput["homeaddress"] << "',";
+        query << "emailaddress = '" << parsedInput["emailaddress"] << "',";
+        query << "salary = '" << parsedInput["salary"] << "'";
+        query << " WHERE " << parsedInput["where"] << " = '" << parsedInput["value"] << "';";
 
-        pqxx::result R = executeQuery(query); // execute the query
+        pqxx::result R = executeQuery(query.str()); // execute the query
 
         // content type header
         std::cout << "Content-type: text/html" << std::endl << std::endl;
-        // csv columns header
-        std::cout << "employeeid,fullname,homeaddress,emailaddress,salary" << "<br>";
-        for (pqxx::const_result_iterator c = R.begin(); c != R.end(); ++c)
-        {
-            std::cout << c[0].as<int>() << ",";
-            std::cout << c[1].as<std::string>() << ",";
-            std::cout << c[2].as<std::string>() << ",";
-            std::cout << c[3].as<std::string>() << ",";
-            std::cout << c[4].as<int>();
-        }
+        // response
+        std::cout << "Table has been updated.";
     }
     else
     {
